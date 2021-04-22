@@ -43,7 +43,7 @@ public class TestAgenda {
 		List<Contacto> resultado = agenda.buscarContactos(texto);
 		System.out.println("Contactos que contienen \"" + texto + "\"");
 		if (resultado.isEmpty()) {
-			System.out.println("No hay contactos coincidentes");
+			System.out.println("No hay contactos coincidentes.");
 		} else {
 			resultado.forEach(contacto -> System.out.println(contacto));
 		}
