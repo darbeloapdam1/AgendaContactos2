@@ -1,5 +1,12 @@
 package ut7.agenda.io;
-import java.awt.Point;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import ut7.agenda.modelo.AgendaContactos;
 import ut7.agenda.modelo.Contacto;
@@ -85,6 +92,31 @@ public class AgendaIO {
 				"  2, susana , santaolalla bilbao , 676767676 ,  ssantaolalla@gmail.com , 17/03/1998, amigos",
 				"  2, adur ,  martin merino ,  611112113 , adurmartinme@gmail.com ,  14/02/2003 , amigos" };
 
+	}
+	
+	public static void exportarPersonales(AgendaContactos agenda, String nombre_fichero) {
+		Map<Relacion,List<String>> personales = agenda.personalesPorRelacion();
+		PrintWriter salida = null;
+		try {
+			File f = new File(nombre_fichero);
+			salida = new PrintWriter(new BufferedWriter(new FileWriter(f)));
+			Set<Relacion> claves = personales.keySet();
+			for(Relacion clave : claves) {
+				List<String> entradas = personales.get(clave);
+				salida.println(clave.getRelacion());
+				for(String entrada : entradas) {
+					salida.println("  " + entrada);
+				}
+			}
+		}catch(NullPointerException e) {
+			System.out.println("Error parametro con valor null " + e.getMessage());
+		} catch (IOException e) {
+			System.out.println("Error en el fichero " + e.getMessage());
+		}catch(ClassCastException e) {
+			System.out.println("Error clave inapropiada " + e.getMessage());
+		}finally {
+			salida.close();
+		}
 	}
 
 }
