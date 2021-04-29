@@ -1,4 +1,4 @@
-package ut7.agenda.modelo;
+package agenda.modelo;
 
 public enum Relacion {
 	PADRE("padre"), MADRE("madre"), AMIGOS("amigos"), PAREJA("pareja"), HIJO("hijo"), HIJA("hija");

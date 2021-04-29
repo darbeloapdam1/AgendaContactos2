@@ -1,4 +1,4 @@
-package ut7.agenda.modelo;
+package agenda.modelo;
 
 public abstract class Contacto implements Comparable<Contacto> {
 	private String nombre;
