@@ -1,12 +1,16 @@
 package agenda.io;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 import java.util.Set;
+import java.util.regex.PatternSyntaxException;
 
 import agenda.modelo.AgendaContactos;
 import agenda.modelo.Contacto;
@@ -19,15 +23,28 @@ import agenda.modelo.Relacion;
  */
 public class AgendaIO {
 
-	public static void importar(AgendaContactos agenda) {
-		String[] contactos = obtenerLineasDatos();
-		for(String linea:contactos) {
-			Contacto con = parsearLinea(linea); // crear el contacto 
-			agenda.añadirContacto(con); // añadir el contacto a la agenda
+	public static void importar(AgendaContactos agenda, String nombre) {
+		Scanner entrada = null;		
+		try {
+			File f = new File(nombre);
+			entrada = new Scanner(f);
+			while(entrada.hasNextLine()) {
+				Contacto con = parsearLinea(entrada.next()); // crear el contacto 
+				agenda.añadirContacto(con); // añadir el contacto a la agenda
+		}
+		}catch(NullPointerException e) {
+			System.out.println("Error parametro con valor null " + e.getMessage());
+		}catch(FileNotFoundException e) {
+			System.out.println("Error archivo no encontrado " + e.getMessage());
+		}catch(IllegalStateException e) {
+			System.out.println("Error si el escáner está cerrado " + e.getMessage());
+		}catch(NoSuchElementException e) {
+			System.out.println("Error no es una excepción de elemento " + e.getMessage());
 		}
 	}
 
 	private static Contacto parsearLinea(String linea) {
+		try {
 		String[] tokens = linea.split(","); // guardar cada dato de la linea
 		String nombre = tokens[1].trim();
 		String apellidos = tokens[2].trim();
@@ -44,7 +61,12 @@ public class AgendaIO {
 			String relacion = tokens[6];
 			return new Personal(nombre, apellidos, telefono, email, fecha_nacimiento, queRelacion(relacion));
 		}
-
+		}catch(PatternSyntaxException e) { // excepción de split
+			System.out.println("Error si la expresión es inválida " + e.getMessage());
+		} catch (IndexOutOfBoundsException e) { // excepción de charAt
+			System.out.println("Error si el índice es negativo o no menor que la longitud " + e.getMessage());
+		}
+		return null;
 	}
 	
 	/*
