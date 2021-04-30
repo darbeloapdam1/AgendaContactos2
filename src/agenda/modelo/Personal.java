@@ -38,7 +38,7 @@ public class Personal extends Contacto {
 	
 	@Override
 	public String toString() {
-		String str = super.toString();
+		String str = "\n" + super.toString();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy");
 		str += "\nFecha nacimiento: " + fecha_nacimiento.format(formatter)
 		+ "\nRelacion: " + relacion.toString() + "\n";

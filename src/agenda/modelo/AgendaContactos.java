@@ -54,7 +54,7 @@ public class AgendaContactos {
 		Iterator<Map.Entry<Character,Set<Contacto>>> it = entradas.iterator();
 		while(it.hasNext()) {
 			Map.Entry<Character,Set<Contacto>> entrada = it.next();
-			sb.append(entrada.getKey() + " (" + contactosEnLetra(entrada.getKey()).size() + " contacto/s)\n");
+			sb.append(entrada.getKey() + " (" + contactosEnLetra(entrada.getKey()).size() + " contacto/s)\n-----------------\n");
 			Set<Contacto> contacto = entrada.getValue();
 			Iterator<Contacto> it2 = contacto.iterator();
 			while(it2.hasNext()) {
