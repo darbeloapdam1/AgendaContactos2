@@ -14,7 +14,7 @@ public class TestAgenda {
 
 	public static void main(String[] args) {
 		AgendaContactos agenda = new AgendaContactos();
-		AgendaIO.importar(agenda);
+		AgendaIO.importar(agenda,"agenda.csv");
 		System.out.println(agenda);
 		separador();
 
@@ -36,6 +36,9 @@ public class TestAgenda {
 
 		personalesPorRelacion(agenda);
 		separador();
+		exportarPersonalesPorRelacion(agenda,"personales-relacion.txt");
+		separador();
+		
 
 	}
 
@@ -81,6 +84,11 @@ public class TestAgenda {
 	private static void separador() {
 		System.out.println("------------------------------------------------------------");
 
+	}
+	
+	private static void exportarPersonalesPorRelacion(AgendaContactos agenda, String nombre) {
+		System.out.println("Exportados personales por relación");
+		AgendaIO.exportarPersonales(agenda, nombre);
 	}
 
 }
