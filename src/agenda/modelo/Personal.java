@@ -8,9 +8,8 @@ public class Personal extends Contacto {
 	private Relacion relacion;
 	public Personal(String nombre, String apellidos, String telefono, String email, String fecha, Relacion relacion) {
 		super(nombre, apellidos, telefono, email);
-		String[] fechaNa = fecha.split("/");
-		String nuevaFecha = fechaNa[2].trim() + "-" + fechaNa[1].trim() + "-" + fechaNa[0].trim();
-		fecha_nacimiento = LocalDate.parse(nuevaFecha);	
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		fecha_nacimiento = LocalDate.parse(fecha.trim(), formatter);
 		this.setRelacion(relacion);
 	}
 
