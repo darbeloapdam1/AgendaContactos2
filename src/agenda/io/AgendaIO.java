@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -17,11 +18,26 @@ import agenda.modelo.Contacto;
 import agenda.modelo.Personal;
 import agenda.modelo.Profesional;
 import agenda.modelo.Relacion;
+import agenda.modelo.RelacionException;
 
 /**
  * Utilidades para cargar la agenda
  */
 public class AgendaIO {
+
+	private static int errores;
+	
+	public AgendaIO() {
+		errores = 0;
+	}
+	
+	public int getErrores() {
+		return errores;
+	}
+
+	public void setErrores(int errores) {
+		AgendaIO.errores = errores;
+	}
 
 	public static void importar(AgendaContactos agenda, String nombre) {
 		Scanner entrada = null;		
@@ -29,21 +45,32 @@ public class AgendaIO {
 			File f = new File(nombre);
 			entrada = new Scanner(f);
 			while(entrada.hasNextLine()) {
-				Contacto con = parsearLinea(entrada.next()); // crear el contacto 
-				agenda.añadirContacto(con); // añadir el contacto a la agenda
+				try {
+					Contacto con = parsearLinea(entrada.nextLine()); // crear el contacto 
+					agenda.añadirContacto(con); // añadir el contacto a la agenda
+				}catch(IndexOutOfBoundsException e) {
+					errores++;
+				}catch(DateTimeParseException e) {
+					errores++;
+				} catch (RelacionException e) {
+					errores++;
+				}
 		}
 		}catch(NullPointerException e) {
 			System.out.println("Error parametro con valor null " + e.getMessage());
-		}catch(FileNotFoundException e) {
+		}
+		catch(FileNotFoundException e) {
 			System.out.println("Error archivo no encontrado " + e.getMessage());
 		}catch(IllegalStateException e) {
 			System.out.println("Error si el escáner está cerrado " + e.getMessage());
 		}catch(NoSuchElementException e) {
 			System.out.println("Error no es una excepción de elemento " + e.getMessage());
+		}finally {
+			System.out.println(errores + " líneas erróneas");
 		}
 	}
 
-	private static Contacto parsearLinea(String linea) {
+	private static Contacto parsearLinea(String linea) throws IndexOutOfBoundsException, DateTimeParseException, RelacionException{
 		try {
 		String[] tokens = linea.split(","); // guardar cada dato de la linea
 		String nombre = tokens[1].trim();
@@ -63,8 +90,6 @@ public class AgendaIO {
 		}
 		}catch(PatternSyntaxException e) { // excepción de split
 			System.out.println("Error si la expresión es inválida " + e.getMessage());
-		} catch (IndexOutOfBoundsException e) { // excepción de charAt
-			System.out.println("Error si el índice es negativo o no menor que la longitud " + e.getMessage());
 		}
 		return null;
 	}
@@ -73,14 +98,14 @@ public class AgendaIO {
 	 * @return rel la relacion del contacto
 	 */
 	
-	private static Relacion queRelacion(String relacion2) {
+	private static Relacion queRelacion(String relacion2) throws RelacionException {
 		Relacion[] relaciones = Relacion.values();
 		for(Relacion rel: relaciones) {
 			if(rel.getRelacion().equalsIgnoreCase(relacion2.trim())) {
 				return rel;
 			}
 		}
-		return null;
+		throw new RelacionException("Relacion Primos no existe");
 	}
 
 	/**
@@ -99,10 +124,8 @@ public class AgendaIO {
 			Set<Relacion> claves = personales.keySet();
 			for(Relacion clave : claves) {
 				List<String> entradas = personales.get(clave);
-				salida.println(clave.getRelacion());
-				for(String entrada : entradas) {
-					salida.println("  " + entrada);
-				}
+				salida.println(clave.getRelacion().toUpperCase());
+				salida.println("    " + entradas);
 			}
 		}catch(NullPointerException e) {
 			System.out.println("Error parametro con valor null " + e.getMessage());
