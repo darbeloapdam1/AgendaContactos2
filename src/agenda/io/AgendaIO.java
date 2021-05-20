@@ -22,6 +22,7 @@ import agenda.modelo.RelacionException;
 
 /**
  * Utilidades para cargar la agenda
+ * @author Diego Arbeloa - Carla Barberia
  */
 public class AgendaIO {
 
