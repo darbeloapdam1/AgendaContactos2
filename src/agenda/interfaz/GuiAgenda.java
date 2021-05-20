@@ -1,6 +1,7 @@
 package agenda.interfaz;
 
 import java.io.File;
+import java.io.IOException;
 
 import agenda.io.AgendaIO;
 import agenda.modelo.AgendaContactos;
@@ -185,14 +186,26 @@ public class GuiAgenda extends Application {
 		selector.setInitialDirectory(new File("."));
 		selector.getExtensionFilters().addAll(new ExtensionFilter("csv","*.csv"));
 		File f = selector.showOpenDialog(null);
-		AgendaIO.importar(agenda, f.getName());
+		int errores = AgendaIO.importar(agenda, f.getName());
+		clear();
+		areaTexto.setText("Lineas erroneas: " + errores);
 		itemImportar.setDisable(true);
 		itemExportarPersonales.setDisable(false);
 	}
 
 	private void exportarPersonales() {
-		// a completar
-
+		FileChooser selector = new FileChooser();
+		selector.setTitle("Exportar contactos personales por relación");
+		selector.setInitialDirectory(new File(":"));
+		selector.getExtensionFilters().add(new ExtensionFilter("txt", ".txt"));
+		try {
+			AgendaIO.exportarPersonales(agenda, selector.showSaveDialog(null).getName());
+			clear();
+			areaTexto.setText("Exportados datos personales");
+		} catch (NullPointerException | IOException e) {
+			areaTexto.setText("Error en el fichero");
+		}
+		
 	}
 
 	/**
