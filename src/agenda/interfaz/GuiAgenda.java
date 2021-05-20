@@ -23,6 +23,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
@@ -108,10 +109,14 @@ public class GuiAgenda extends Application {
 		txtBuscar.setMinHeight(40);
 		VBox.setMargin(txtBuscar, new Insets(0, 0, 40, 0));
 		
+		ToggleGroup grupo = new ToggleGroup();
+		
 		rbtListarTodo = new RadioButton("Listar toda la agenda");
 		rbtListarTodo.setSelected(true);
+		rbtListarTodo.setToggleGroup(grupo);
 		
 		rbtListarSoloNumero = new RadioButton("Listar nº contactos");
+		rbtListarSoloNumero.setToggleGroup(grupo);
 		
 		btnListar = new Button("Listar");
 		btnListar.setPrefWidth(250);
