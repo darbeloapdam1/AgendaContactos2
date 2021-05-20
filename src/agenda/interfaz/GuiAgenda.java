@@ -85,9 +85,72 @@ public class GuiAgenda extends Application {
 	}
 
 	private VBox crearPanelBotones() {
-		// a completar
 		VBox panel = new VBox();
-
+		panel.setPadding(new Insets(10));
+		panel.setSpacing(10);
+		
+		txtBuscar = new TextField("");
+		txtBuscar.setPromptText("Buscar");
+		txtBuscar.setMinHeight(40);
+		VBox.setMargin(txtBuscar, new Insets(0, 0, 40, 0));
+		
+		rbtListarTodo = new RadioButton("Listar toda la agenda");
+		rbtListarTodo.setSelected(true);
+		
+		rbtListarSoloNumero = new RadioButton("Listar nº contactos");
+		
+		btnListar = new Button("Listar");
+		btnListar.setPrefWidth(250);
+		btnListar.setStyle("-fx-background-color: rgb(222,193,180);\r\n"
+				+ "	-fx-border-color:  rgb(128,128,128);\r\n"
+				+ "    -fx-border-radius:  4px;\r\n"
+				+ "    -fx-font-family: \"Pt Sans\";\r\n"
+				+ "    -fx-font-size: 14px;\r\n"
+				+ "    -fx-text-fill:  blue;");
+		VBox.setMargin(btnListar, new Insets(0, 0, 40, 0));
+		
+		btnPersonalesEnLetra = new Button("Contactos personales en letra");
+		btnPersonalesEnLetra.setPrefWidth(250);
+		btnPersonalesEnLetra.setStyle("-fx-background-color: rgb(222,193,180);\r\n"
+				+ "	-fx-border-color:  rgb(128,128,128);\r\n"
+				+ "    -fx-border-radius:  4px;\r\n"
+				+ "    -fx-font-family: \"Pt Sans\";\r\n"
+				+ "    -fx-font-size: 14px;\r\n"
+				+ "    -fx-text-fill:  blue;");
+		
+		btnPersonalesOrdenadosPorFecha = new Button("Contactos Personales\n ordenados por fecha");
+		btnPersonalesOrdenadosPorFecha.setPrefWidth(250);
+		btnPersonalesOrdenadosPorFecha.setStyle("-fx-background-color: rgb(222,193,180);\r\n"
+				+ "	-fx-border-color:  rgb(128,128,128);\r\n"
+				+ "    -fx-border-radius:  4px;\r\n"
+				+ "    -fx-font-family: \"Pt Sans\";\r\n"
+				+ "    -fx-font-size: 14px;\r\n"
+				+ "    -fx-text-fill:  blue;");
+		VBox.setVgrow(btnPersonalesOrdenadosPorFecha, Priority.ALWAYS);
+		
+		btnClear = new Button("Clear");
+		btnClear.setPrefWidth(250);
+		btnClear.setStyle("-fx-background-color: rgb(222,193,180);\r\n"
+				+ "	-fx-border-color:  rgb(128,128,128);\r\n"
+				+ "    -fx-border-radius:  4px;\r\n"
+				+ "    -fx-font-family: \"Pt Sans\";\r\n"
+				+ "    -fx-font-size: 14px;\r\n"
+				+ "    -fx-text-fill:  blue;");
+		VBox.setMargin(btnClear, new Insets(40, 0, 0, 0));
+		
+		btnSalir = new Button("Salir");
+		btnSalir.setPrefWidth(250);
+		btnSalir.setStyle("-fx-background-color: rgb(222,193,180);\r\n"
+				+ "	-fx-border-color:  rgb(128,128,128);\r\n"
+				+ "    -fx-border-radius:  4px;\r\n"
+				+ "    -fx-font-family: \"Pt Sans\";\r\n"
+				+ "    -fx-font-size: 14px;\r\n"
+				+ "    -fx-text-fill:  blue;");
+		
+		panel.getChildren().add(txtBuscar);
+		panel.getChildren().addAll(rbtListarTodo, rbtListarSoloNumero);
+		panel.getChildren().addAll(btnListar, btnPersonalesEnLetra, btnPersonalesOrdenadosPorFecha, btnClear, btnSalir);
+		
 		return panel;
 	}
 
