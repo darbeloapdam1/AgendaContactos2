@@ -1,7 +1,5 @@
 package agenda.test;
 
-import java.awt.image.ImagingOpException;
-import java.io.IOError;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
