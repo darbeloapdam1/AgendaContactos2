@@ -4,6 +4,7 @@ import agenda.modelo.AgendaContactos;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
@@ -12,7 +13,10 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 /**
@@ -88,10 +92,49 @@ public class GuiAgenda extends Application {
 	}
 
 	private GridPane crearPanelLetras() {
-		// a completar
 		GridPane panel = new GridPane();
-
+		panel.setGridLinesVisible(false);
+		
+		panel.setPadding(new Insets(10, 5, 10, 5));
+		panel.setVgap(4);
+		panel.setHgap(4);
+		panel.setAlignment(Pos.CENTER);
+		
+		for(int i = 0; i < 2; i++) {
+			RowConstraints row = new RowConstraints();
+			row.setPercentHeight(50);
+			panel.getRowConstraints().add(row);
+		}
+		
+		for(int i = 0; i < 14; i++) {
+			ColumnConstraints col = new ColumnConstraints();
+			col.setPercentWidth(7.14);
+			panel.getColumnConstraints().add(col);
+		}
+		
+		String[] valores = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "Ñ", "O", 
+				"P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+		int contador = 0;
+		
+		for(int f = 0; f < 2; f++) {
+			for(int c = 0; c < 14; c++) {
+				if(!(contador == valores.length)) {
+					panel.add(crearBotones(valores[contador]), c, f);
+					contador++;
+				}
+			}
+			
+		}
 		return panel;
+	}
+	
+	private Button crearBotones(String texto) {
+		Button boton = new Button(texto);
+		boton.setStyle(".botonletra");
+		boton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+		GridPane.setHgrow(boton, Priority.ALWAYS);
+		GridPane.setVgrow(boton, Priority.ALWAYS);
+		return boton;
 	}
 
 	private MenuBar crearBarraMenu() {
