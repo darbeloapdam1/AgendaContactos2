@@ -1,5 +1,9 @@
 package agenda.interfaz;
 
+import java.io.File;
+import java.io.IOException;
+
+import agenda.io.AgendaIO;
 import agenda.modelo.AgendaContactos;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -7,17 +11,22 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 /**
  * 
@@ -201,20 +210,66 @@ public class GuiAgenda extends Application {
 	}
 
 	private MenuBar crearBarraMenu() {
-		// a completar
 		MenuBar barra = new MenuBar();
-
+		
+		Menu archivo = new Menu("Archivo");
+		itemImportar = new MenuItem("_Importar agenda");
+		itemImportar.setAccelerator(KeyCombination.keyCombination("Ctrl+I"));
+		itemImportar.setOnAction(event -> importarAgenda());
+		itemExportarPersonales = new MenuItem("_Exportar Personales");
+		itemExportarPersonales.setDisable(true);
+		itemExportarPersonales.setAccelerator(KeyCombination.keyCombination("Ctrl+E"));
+		itemExportarPersonales.setOnAction(event -> exportarPersonales());
+		itemSalir = new MenuItem("_Salir");
+		itemSalir.setAccelerator(KeyCombination.keyCombination("Ctrl+S"));
+		itemSalir.setOnAction(event -> salir());
+		archivo.getItems().addAll(itemImportar, itemExportarPersonales, new SeparatorMenuItem(), itemSalir);
+		
+		
+		Menu operacion = new Menu("Operaciones");
+		itemBuscar = new MenuItem("_Buscar");
+		itemBuscar.setAccelerator(KeyCombination.keyCombination("Ctrl+B"));
+		itemBuscar.setOnAction(event -> buscar());
+		itemFelicitar = new MenuItem("_Felicitar");
+		itemFelicitar.setAccelerator(KeyCombination.keyCombination("Ctrl+F"));
+		itemFelicitar.setOnAction(event -> felicitar());
+		operacion.getItems().addAll(itemBuscar, itemFelicitar);
+		
+		Menu help = new Menu("Help");
+		itemAbout = new MenuItem("_About");
+		itemAbout.setAccelerator(KeyCombination.keyCombination("Ctrl+A"));
+		help.getItems().add(itemAbout);
+		
+		barra.getMenus().addAll(archivo, operacion,help);
 		return barra;
 	}
 
 	private void importarAgenda() {
-		// a completar
-
+		FileChooser selector = new FileChooser();
+		selector.setTitle("Abrir fichero csv");
+		selector.setInitialDirectory(new File("."));
+		selector.getExtensionFilters().addAll(new ExtensionFilter("csv","*.csv"));
+		File f = selector.showOpenDialog(null);
+		int errores = AgendaIO.importar(agenda, f.getName());
+		clear();
+		areaTexto.setText("Lineas erroneas: " + errores);
+		itemImportar.setDisable(true);
+		itemExportarPersonales.setDisable(false);
 	}
 
 	private void exportarPersonales() {
-		// a completar
-
+		FileChooser selector = new FileChooser();
+		selector.setTitle("Exportar contactos personales por relación");
+		selector.setInitialDirectory(new File(":"));
+		selector.getExtensionFilters().add(new ExtensionFilter("txt", ".txt"));
+		try {
+			AgendaIO.exportarPersonales(agenda, selector.showSaveDialog(null).getName());
+			clear();
+			areaTexto.setText("Exportados datos personales");
+		} catch (NullPointerException | IOException e) {
+			areaTexto.setText("Error en el fichero");
+		}
+		
 	}
 
 	/**
