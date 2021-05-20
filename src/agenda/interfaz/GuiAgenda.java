@@ -6,11 +6,14 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -81,7 +84,6 @@ public class GuiAgenda extends Application {
 	}
 
 	private VBox crearPanelBotones() {
-		// a completar
 		VBox panel = new VBox();
 
 		return panel;
@@ -95,9 +97,32 @@ public class GuiAgenda extends Application {
 	}
 
 	private MenuBar crearBarraMenu() {
-		// a completar
 		MenuBar barra = new MenuBar();
-
+		Menu archivo = new Menu("Archivo");
+		MenuItem importar = new MenuItem("_Importar agenda");
+		importar.setAccelerator(KeyCombination.keyCombination("Ctrl+I"));
+		importar.setOnAction(event -> importarAgenda());
+		MenuItem exportar = new MenuItem("_Exportar Personales");
+		exportar.setDisable(true);
+		exportar.setAccelerator(KeyCombination.keyCombination("Ctrl+E"));
+		exportar.setOnAction(event -> exportarPersonales());
+		MenuItem salir = new MenuItem("_Salir");
+		salir.setAccelerator(KeyCombination.keyCombination("Ctrl+S"));
+		archivo.getItems().addAll(importar, exportar, new SeparatorMenuItem(), salir);
+		
+		
+		Menu operacion = new Menu("Operaciones");
+		MenuItem buscar = new MenuItem("_Buscar");
+		buscar.setAccelerator(KeyCombination.keyCombination("Ctrl+B"));
+		MenuItem felicitar = new MenuItem("_Felicitar");
+		felicitar.setAccelerator(KeyCombination.keyCombination("Ctrl+F"));
+		operacion.getItems().addAll(buscar, felicitar);
+		
+		Menu help = new Menu("Help");
+		MenuItem about = new MenuItem("_About");
+		about.setAccelerator(KeyCombination.keyCombination("Ctrl+A"));
+		help.getItems().add(about);
+		
 		return barra;
 	}
 
