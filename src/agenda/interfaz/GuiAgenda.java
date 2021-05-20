@@ -1,5 +1,8 @@
 package agenda.interfaz;
 
+import java.io.File;
+
+import agenda.io.AgendaIO;
 import agenda.modelo.AgendaContactos;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -21,6 +24,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 /**
  * 
@@ -141,37 +146,48 @@ public class GuiAgenda extends Application {
 
 	private MenuBar crearBarraMenu() {
 		MenuBar barra = new MenuBar();
+		
 		Menu archivo = new Menu("Archivo");
-		MenuItem importar = new MenuItem("_Importar agenda");
-		importar.setAccelerator(KeyCombination.keyCombination("Ctrl+I"));
-		importar.setOnAction(event -> importarAgenda());
-		MenuItem exportar = new MenuItem("_Exportar Personales");
-		exportar.setDisable(true);
-		exportar.setAccelerator(KeyCombination.keyCombination("Ctrl+E"));
-		exportar.setOnAction(event -> exportarPersonales());
-		MenuItem salir = new MenuItem("_Salir");
-		salir.setAccelerator(KeyCombination.keyCombination("Ctrl+S"));
-		archivo.getItems().addAll(importar, exportar, new SeparatorMenuItem(), salir);
+		itemImportar = new MenuItem("_Importar agenda");
+		itemImportar.setAccelerator(KeyCombination.keyCombination("Ctrl+I"));
+		itemImportar.setOnAction(event -> importarAgenda());
+		itemExportarPersonales = new MenuItem("_Exportar Personales");
+		itemExportarPersonales.setDisable(true);
+		itemExportarPersonales.setAccelerator(KeyCombination.keyCombination("Ctrl+E"));
+		itemExportarPersonales.setOnAction(event -> exportarPersonales());
+		itemSalir = new MenuItem("_Salir");
+		itemSalir.setAccelerator(KeyCombination.keyCombination("Ctrl+S"));
+		itemSalir.setOnAction(event -> salir());
+		archivo.getItems().addAll(itemImportar, itemExportarPersonales, new SeparatorMenuItem(), itemSalir);
 		
 		
 		Menu operacion = new Menu("Operaciones");
-		MenuItem buscar = new MenuItem("_Buscar");
-		buscar.setAccelerator(KeyCombination.keyCombination("Ctrl+B"));
-		MenuItem felicitar = new MenuItem("_Felicitar");
-		felicitar.setAccelerator(KeyCombination.keyCombination("Ctrl+F"));
-		operacion.getItems().addAll(buscar, felicitar);
+		itemBuscar = new MenuItem("_Buscar");
+		itemBuscar.setAccelerator(KeyCombination.keyCombination("Ctrl+B"));
+		itemBuscar.setOnAction(event -> buscar());
+		itemFelicitar = new MenuItem("_Felicitar");
+		itemFelicitar.setAccelerator(KeyCombination.keyCombination("Ctrl+F"));
+		itemFelicitar.setOnAction(event -> felicitar());
+		operacion.getItems().addAll(itemBuscar, itemFelicitar);
 		
 		Menu help = new Menu("Help");
-		MenuItem about = new MenuItem("_About");
-		about.setAccelerator(KeyCombination.keyCombination("Ctrl+A"));
-		help.getItems().add(about);
+		itemAbout = new MenuItem("_About");
+		itemAbout.setAccelerator(KeyCombination.keyCombination("Ctrl+A"));
+		help.getItems().add(itemAbout);
 		
+		barra.getMenus().addAll(archivo, operacion,help);
 		return barra;
 	}
 
 	private void importarAgenda() {
-		// a completar
-
+		FileChooser selector = new FileChooser();
+		selector.setTitle("Abrir fichero csv");
+		selector.setInitialDirectory(new File("."));
+		selector.getExtensionFilters().addAll(new ExtensionFilter("csv","*.csv"));
+		File f = selector.showOpenDialog(null);
+		AgendaIO.importar(agenda, f.getName());
+		itemImportar.setDisable(true);
+		itemExportarPersonales.setDisable(false);
 	}
 
 	private void exportarPersonales() {
