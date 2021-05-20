@@ -151,7 +151,7 @@ public class GuiAgenda extends Application {
 				+ "    -fx-text-fill:  blue;");
 		VBox.setMargin(btnClear, new Insets(40, 0, 0, 0));
 		
-		btnSalir = new Button("Salir");
+		btnSalir = new Button("Salir ");
 		btnSalir.setPrefWidth(250);
 		btnSalir.setOnAction(event -> salir());
 		btnSalir.setStyle("-fx-background-color: rgb(222,193,180);\r\n"
