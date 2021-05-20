@@ -2,15 +2,20 @@ package agenda.interfaz;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 import agenda.io.AgendaIO;
 import agenda.modelo.AgendaContactos;
+import agenda.modelo.Personal;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -296,7 +301,29 @@ public class GuiAgenda extends Application {
 
 	private void personalesOrdenadosPorFecha() {
 		clear();
-		// a completar
+		if(agenda.totalContactos() > 0) {
+			List<String> opciones = Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "Ñ", "O", 
+				"P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z");
+			ChoiceDialog<String> dialogo = new ChoiceDialog<>("A",opciones);
+			dialogo.setTitle("Selector de letra");
+			dialogo.setContentText("Elija letra:");
+			Optional<String> resul = dialogo.showAndWait();
+			if(resul.isPresent()) {
+				String opcion = resul.get();
+				List<Personal> contactos = agenda.personalesOrdenadosPorFechaNacimiento(opcion.charAt(0));
+					if(contactos.size() > 0) {
+					String resulTexto = "Contactos personales ordenados por fecha de nacimiento\n\n" + opcion + "\n";
+					for(Personal per : contactos) {
+						resulTexto += per.toString();
+					}
+					areaTexto.setText(resulTexto);
+				}else {
+					areaTexto.setText("No hay contactos personales");
+				}
+			}			
+		}else {
+			areaTexto.setText("Inserte antes la agenda");
+		}
 	}
 
 	private void contactosPersonalesEnLetra() {
