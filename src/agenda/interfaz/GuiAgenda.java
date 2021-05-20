@@ -110,6 +110,7 @@ public class GuiAgenda extends Application {
 		
 		btnListar = new Button("Listar");
 		btnListar.setPrefWidth(250);
+		btnListar.setOnAction(event -> listar());
 		btnListar.setStyle("-fx-background-color: rgb(222,193,180);\r\n"
 				+ "	-fx-border-color:  rgb(128,128,128);\r\n"
 				+ "    -fx-border-radius:  4px;\r\n"
@@ -120,6 +121,7 @@ public class GuiAgenda extends Application {
 		
 		btnPersonalesEnLetra = new Button("Contactos personales en letra");
 		btnPersonalesEnLetra.setPrefWidth(250);
+		btnPersonalesEnLetra.setOnAction(event -> contactosPersonalesEnLetra());
 		btnPersonalesEnLetra.setStyle("-fx-background-color: rgb(222,193,180);\r\n"
 				+ "	-fx-border-color:  rgb(128,128,128);\r\n"
 				+ "    -fx-border-radius:  4px;\r\n"
@@ -129,6 +131,7 @@ public class GuiAgenda extends Application {
 		
 		btnPersonalesOrdenadosPorFecha = new Button("Contactos Personales\n ordenados por fecha");
 		btnPersonalesOrdenadosPorFecha.setPrefWidth(250);
+		btnPersonalesOrdenadosPorFecha.setOnAction(event -> personalesOrdenadosPorFecha());
 		btnPersonalesOrdenadosPorFecha.setStyle("-fx-background-color: rgb(222,193,180);\r\n"
 				+ "	-fx-border-color:  rgb(128,128,128);\r\n"
 				+ "    -fx-border-radius:  4px;\r\n"
@@ -139,6 +142,7 @@ public class GuiAgenda extends Application {
 		
 		btnClear = new Button("Clear");
 		btnClear.setPrefWidth(250);
+		btnClear.setOnAction(event -> clear());
 		btnClear.setStyle("-fx-background-color: rgb(222,193,180);\r\n"
 				+ "	-fx-border-color:  rgb(128,128,128);\r\n"
 				+ "    -fx-border-radius:  4px;\r\n"
@@ -149,6 +153,7 @@ public class GuiAgenda extends Application {
 		
 		btnSalir = new Button("Salir");
 		btnSalir.setPrefWidth(250);
+		btnSalir.setOnAction(event -> salir());
 		btnSalir.setStyle("-fx-background-color: rgb(222,193,180);\r\n"
 				+ "	-fx-border-color:  rgb(128,128,128);\r\n"
 				+ "    -fx-border-radius:  4px;\r\n"
