@@ -29,8 +29,8 @@ public class AgendaIO {
 		int errores = 0;
 		Scanner entrada = null;		
 		try {
-			File f = new File(nombre);
-			entrada = new Scanner(f);
+			entrada = new Scanner(AgendaIO.class.getClassLoader()
+					 .getResourceAsStream(nombre));
 			while(entrada.hasNextLine()) {
 				try {
 					Contacto con = parsearLinea(entrada.nextLine()); // crear el contacto 
@@ -45,9 +45,6 @@ public class AgendaIO {
 		}
 		}catch(NullPointerException e) {
 			System.out.println("Error parametro con valor null " + e.getMessage());
-		}
-		catch(FileNotFoundException e) {
-			System.out.println("Error archivo no encontrado " + e.getMessage());
 		}catch(IllegalStateException e) {
 			System.out.println("Error si el escáner está cerrado " + e.getMessage());
 		}catch(NoSuchElementException e) {
