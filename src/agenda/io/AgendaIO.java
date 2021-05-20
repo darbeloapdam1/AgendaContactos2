@@ -39,6 +39,8 @@ public class AgendaIO {
 					errores++;
 				}catch(DateTimeParseException e) {
 					errores++;
+				}catch(IllegalArgumentException e) {
+					errores++;
 				}
 		}
 		}catch(NullPointerException e) {
@@ -57,7 +59,7 @@ public class AgendaIO {
 		return errores;
 	}
 
-	private static Contacto parsearLinea(String linea) throws IndexOutOfBoundsException, DateTimeParseException, PatternSyntaxException{
+	private static Contacto parsearLinea(String linea) throws IndexOutOfBoundsException, DateTimeParseException, PatternSyntaxException, IllegalArgumentException{
 		String[] tokens = linea.split(","); // guardar cada dato de la linea
 		String nombre = tokens[1].trim();
 		String apellidos = tokens[2].trim();
@@ -83,11 +85,10 @@ public class AgendaIO {
 	 *         contacto personal
 	 */
 	
-	public static void exportarPersonales(AgendaContactos agenda, String nombre_fichero) throws NullPointerException, IOException, ClassCastException {
+	public static void exportarPersonales(AgendaContactos agenda, String nombre_fichero) throws NullPointerException, IOException {
 		Map<Relacion,List<String>> personales = agenda.personalesPorRelacion();
-		PrintWriter salida = null;
 		File f = new File(nombre_fichero);
-		salida = new PrintWriter(new BufferedWriter(new FileWriter(f)));
+		PrintWriter salida = new PrintWriter(new BufferedWriter(new FileWriter(f)));
 		Set<Relacion> claves = personales.keySet();
 		for(Relacion clave : claves) {
 			List<String> entradas = personales.get(clave);

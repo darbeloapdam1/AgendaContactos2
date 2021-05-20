@@ -1,5 +1,8 @@
 package agenda.test;
 
+import java.awt.image.ImagingOpException;
+import java.io.IOError;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -88,7 +91,15 @@ public class TestAgenda {
 	
 	private static void exportarPersonalesPorRelacion(AgendaContactos agenda, String nombre) {
 		System.out.println("Exportados personales por relación");
-		AgendaIO.exportarPersonales(agenda, nombre);
+		try {
+			AgendaIO.exportarPersonales(agenda, nombre);
+		} catch (NullPointerException e) {
+			System.out.println("Error fichero no encotrado " + e.getMessage());
+		}catch(ClassCastException e) {
+			
+		}catch(IOException e) {
+			System.out.println("Error en la ruta del fichero " + e.getMessage());
+		}
 	}
 
 }
