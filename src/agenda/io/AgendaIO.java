@@ -25,21 +25,8 @@ import agenda.modelo.RelacionException;
  */
 public class AgendaIO {
 
-	private static int errores;
-	
-	public AgendaIO() {
-		errores = 0;
-	}
-	
-	public int getErrores() {
-		return errores;
-	}
-
-	public void setErrores(int errores) {
-		AgendaIO.errores = errores;
-	}
-
-	public static void importar(AgendaContactos agenda, String nombre) {
+	public static int importar(AgendaContactos agenda, String nombre) {
+		int errores = 0;
 		Scanner entrada = null;		
 		try {
 			File f = new File(nombre);
@@ -51,8 +38,6 @@ public class AgendaIO {
 				}catch(IndexOutOfBoundsException e) {
 					errores++;
 				}catch(DateTimeParseException e) {
-					errores++;
-				} catch (RelacionException e) {
 					errores++;
 				}
 		}
@@ -66,12 +51,13 @@ public class AgendaIO {
 		}catch(NoSuchElementException e) {
 			System.out.println("Error no es una excepción de elemento " + e.getMessage());
 		}finally {
-			System.out.println(errores + " líneas erróneas");
+			entrada.close();
 		}
+		
+		return errores;
 	}
 
-	private static Contacto parsearLinea(String linea) throws IndexOutOfBoundsException, DateTimeParseException, RelacionException{
-		try {
+	private static Contacto parsearLinea(String linea) throws IndexOutOfBoundsException, DateTimeParseException, PatternSyntaxException{
 		String[] tokens = linea.split(","); // guardar cada dato de la linea
 		String nombre = tokens[1].trim();
 		String apellidos = tokens[2].trim();
@@ -85,27 +71,9 @@ public class AgendaIO {
 			return new Profesional(nombre, apellidos, telefono, email, empresa);
 		} else {
 			String fecha_nacimiento = tokens[5];
-			String relacion = tokens[6];
-			return new Personal(nombre, apellidos, telefono, email, fecha_nacimiento, queRelacion(relacion));
+			return new Personal(nombre, apellidos, telefono, email, fecha_nacimiento, Relacion.valueOf(tokens[6].trim().toUpperCase()));
 		}
-		}catch(PatternSyntaxException e) { // excepción de split
-			System.out.println("Error si la expresión es inválida " + e.getMessage());
-		}
-		return null;
-	}
-	
-	/*
-	 * @return rel la relacion del contacto
-	 */
-	
-	private static Relacion queRelacion(String relacion2) throws RelacionException {
-		Relacion[] relaciones = Relacion.values();
-		for(Relacion rel: relaciones) {
-			if(rel.getRelacion().equalsIgnoreCase(relacion2.trim())) {
-				return rel;
-			}
-		}
-		throw new RelacionException("Relacion Primos no existe");
+			
 	}
 
 	/**
@@ -115,27 +83,18 @@ public class AgendaIO {
 	 *         contacto personal
 	 */
 	
-	public static void exportarPersonales(AgendaContactos agenda, String nombre_fichero) {
+	public static void exportarPersonales(AgendaContactos agenda, String nombre_fichero) throws NullPointerException, IOException, ClassCastException {
 		Map<Relacion,List<String>> personales = agenda.personalesPorRelacion();
 		PrintWriter salida = null;
-		try {
-			File f = new File(nombre_fichero);
-			salida = new PrintWriter(new BufferedWriter(new FileWriter(f)));
-			Set<Relacion> claves = personales.keySet();
-			for(Relacion clave : claves) {
-				List<String> entradas = personales.get(clave);
-				salida.println(clave.getRelacion().toUpperCase());
-				salida.println("    " + entradas);
-			}
-		}catch(NullPointerException e) {
-			System.out.println("Error parametro con valor null " + e.getMessage());
-		} catch (IOException e) {
-			System.out.println("Error en el fichero " + e.getMessage());
-		}catch(ClassCastException e) {
-			System.out.println("Error clave inapropiada " + e.getMessage());
-		}finally {
-			salida.close();
+		File f = new File(nombre_fichero);
+		salida = new PrintWriter(new BufferedWriter(new FileWriter(f)));
+		Set<Relacion> claves = personales.keySet();
+		for(Relacion clave : claves) {
+			List<String> entradas = personales.get(clave);
+			salida.println(clave.getRelacion().toUpperCase());
+			salida.println("    " + entradas);
 		}
+		salida.close();
 	}
 
 }
