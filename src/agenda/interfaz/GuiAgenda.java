@@ -213,14 +213,21 @@ public class GuiAgenda extends Application {
 	 */
 	private void listar() {
 		clear();
-		// a completar
+		if(agenda.totalContactos() > 0) {
+			if(rbtListarTodo.isSelected()) {
+				areaTexto.setText(agenda.toString());
+			}else {
+				areaTexto.setText("Total contactos en la agenda: " + agenda.totalContactos());
+			}
+		}else {
+			areaTexto.setText("Inserte antes la agenda");
+		}
 
 	}
 
 	private void personalesOrdenadosPorFecha() {
 		clear();
 		// a completar
-
 	}
 
 	private void contactosPersonalesEnLetra() {
