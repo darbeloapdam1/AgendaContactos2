@@ -41,10 +41,12 @@ public class AgendaIO {
 					errores++;
 				}catch(IllegalArgumentException e) {
 					errores++;
+				}catch(NullPointerException e) {
+					errores++;
 				}
 		}
 		}catch(NullPointerException e) {
-			System.out.println("Error parametro con valor null " + e.getMessage());
+			System.out.println("Error parametro con valor " + e.getMessage());
 		}catch(IllegalStateException e) {
 			System.out.println("Error si el escáner está cerrado " + e.getMessage());
 		}catch(NoSuchElementException e) {
