@@ -121,9 +121,11 @@ public class GuiAgenda extends Application {
 		rbtListarTodo = new RadioButton("Listar toda la agenda");
 		rbtListarTodo.setSelected(true);
 		rbtListarTodo.setToggleGroup(grupo);
+		VBox.setVgrow(rbtListarTodo, Priority.ALWAYS);
 		
 		rbtListarSoloNumero = new RadioButton("Listar nº contactos");
 		rbtListarSoloNumero.setToggleGroup(grupo);
+		VBox.setVgrow(rbtListarSoloNumero, Priority.ALWAYS);
 		
 		btnListar = new Button("Listar");
 		btnListar.setPrefWidth(250);
@@ -135,6 +137,7 @@ public class GuiAgenda extends Application {
 		btnPersonalesEnLetra.setPrefWidth(250);
 		btnPersonalesEnLetra.setOnAction(event -> contactosPersonalesEnLetra());
 		btnPersonalesEnLetra.getStyleClass().add("botones");
+		VBox.setVgrow(btnPersonalesEnLetra, Priority.ALWAYS);
 		
 		btnPersonalesOrdenadosPorFecha = new Button("Contactos Personales\n ordenados por fecha");
 		btnPersonalesOrdenadosPorFecha.setPrefWidth(250);
@@ -152,6 +155,7 @@ public class GuiAgenda extends Application {
 		btnSalir.setPrefWidth(250);
 		btnSalir.setOnAction(event -> salir());
 		btnSalir.getStyleClass().add("botones");
+		VBox.setVgrow(btnSalir, Priority.ALWAYS);
 		
 		panel.getChildren().add(txtBuscar);
 		panel.getChildren().addAll(rbtListarTodo, rbtListarSoloNumero);
@@ -259,10 +263,11 @@ public class GuiAgenda extends Application {
 	private void exportarPersonales() {
 		FileChooser selector = new FileChooser();
 		selector.setTitle("Exportar contactos personales por relación");
-		selector.setInitialDirectory(new File(":"));
+		selector.setInitialDirectory(new File("."));
 		selector.getExtensionFilters().add(new ExtensionFilter("txt", ".txt"));
 		try {
-			AgendaIO.exportarPersonales(agenda, selector.showSaveDialog(null).getName());
+			File f = selector.showSaveDialog(null);
+			AgendaIO.exportarPersonales(agenda, f.getName());
 			clear();
 			areaTexto.setText("Exportados datos personales");
 		} catch (NullPointerException | IOException e) {
