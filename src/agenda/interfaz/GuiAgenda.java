@@ -113,6 +113,8 @@ public class GuiAgenda extends Application {
 		txtBuscar = new TextField("");
 		txtBuscar.setPromptText("Buscar");
 		txtBuscar.setMinHeight(40);
+		txtBuscar.setOnAction(event -> buscar());	
+
 		VBox.setMargin(txtBuscar, new Insets(0, 0, 40, 0));
 		
 		ToggleGroup grupo = new ToggleGroup();
