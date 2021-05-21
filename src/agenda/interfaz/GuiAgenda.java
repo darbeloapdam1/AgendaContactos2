@@ -391,7 +391,7 @@ public class GuiAgenda extends Application {
 			}
 			areaTexto.setText(str);
 		}else {
-			areaTexto.setText("Inserte antes la agenda");
+			areaTexto.setText("Inserteantes la agenda");
 		}
 
 	}
