@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import com.sun.net.httpserver.Authenticator.Result;
-
 import agenda.io.AgendaIO;
 import agenda.modelo.AgendaContactos;
 import agenda.modelo.Contacto;
@@ -370,7 +368,7 @@ public class GuiAgenda extends Application {
 					textoResul += con.toString();
 				}
 			}else {
-			textoResul += "No hay contactos";
+				textoResul += "No hay contactos";
 			}
 			areaTexto.setText(textoResul);
 		}else {
@@ -380,14 +378,26 @@ public class GuiAgenda extends Application {
 
 	private void felicitar() {
 		clear();
-		// a completar
-
+		
 	}
 
 	private void buscar() {
 		clear();
-		// a completar
-
+		if(agenda.totalContactos() > 0) {
+			String texto = txtBuscar.getText();
+			List<Contacto> contactos = agenda.buscarContactos(texto);
+			if(contactos.size() > 0) {
+				String textoResul = "Contactos en la agenda que contienen '" + texto + "'\n";
+				for(Contacto con : contactos) {
+					textoResul += con.toString();
+				}
+				areaTexto.setText(textoResul);
+			}else {
+				areaTexto.setText("No hay contactos en la agendo con ese texto");
+			}
+		}else {
+			areaTexto.setText("Inserte antes la agenda");
+		}
 		cogerFoco();
 
 	}
