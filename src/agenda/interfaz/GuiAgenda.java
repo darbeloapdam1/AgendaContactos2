@@ -2,6 +2,8 @@ package agenda.interfaz;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -380,7 +382,17 @@ public class GuiAgenda extends Application {
 
 	private void felicitar() {
 		clear();
-		// a completar
+		LocalDate ld = LocalDate.now();
+		List<Personal> felicitar = agenda.felicitar();
+		if(agenda.totalContactos() > 0) {
+			String str = ("Hoy es " + ld);
+			for (Contacto con : felicitar) {
+				str += con.toString();
+			}
+			areaTexto.setText(str);
+		}else {
+			areaTexto.setText("Inserte antes la agenda");
+		}
 
 	}
 
