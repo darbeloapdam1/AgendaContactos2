@@ -52,7 +52,9 @@ public class AgendaIO {
 		}catch(NoSuchElementException e) {
 			System.out.println("Error no es una excepción de elemento " + e.getMessage());
 		}finally {
-			entrada.close();
+			if(entrada != null) {
+				entrada.close();
+			}
 		}
 		
 		return errores;
