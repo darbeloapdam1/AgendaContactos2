@@ -327,7 +327,7 @@ public class GuiAgenda extends Application {
 					for(Personal per : contactos) {
 						resulTexto += per.toString();
 					}
-					areaTexto.setText(resulTexto);
+						areaTexto.setText(resulTexto);
 					}
 				}catch(NullPointerException e) {
 					areaTexto.setText("No hay contactos personales");
