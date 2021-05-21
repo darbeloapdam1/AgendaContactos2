@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 
-import java.util.ArrayList;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -203,6 +201,7 @@ public class GuiAgenda extends Application {
 		Button boton = new Button(texto);
 		boton.getStyleClass().add("botonletra");
 		boton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+		boton.setOnAction(event -> contactosEnLetra(boton.getText().charAt(0)));
 		GridPane.setHgrow(boton, Priority.ALWAYS);
 		GridPane.setVgrow(boton, Priority.ALWAYS);
 		return boton;
