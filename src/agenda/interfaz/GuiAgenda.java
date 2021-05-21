@@ -2,6 +2,7 @@ package agenda.interfaz;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -16,8 +17,10 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -36,6 +39,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
+import jdk.jshell.Diag;
 /**
  * 
  * @author Diego Arbeloa - Carla Barberia
@@ -255,6 +259,7 @@ public class GuiAgenda extends Application {
 		Menu help = new Menu("Help");
 		itemAbout = new MenuItem("_About");
 		itemAbout.setAccelerator(KeyCombination.keyCombination("Ctrl+A"));
+		itemAbout.setOnAction(event -> about());
 		help.getItems().add(itemAbout);
 		
 		barra.getMenus().addAll(archivo, operacion,help);
@@ -403,8 +408,13 @@ public class GuiAgenda extends Application {
 	}
 
 	private void about() {
-		// a completar
-
+		Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+		alerta.setTitle("About agenda de contactos");
+		alerta.setHeaderText(null);
+		alerta.setContentText("Mi agenda de contactos");
+		DialogPane dialogPane = alerta.getDialogPane();
+		dialogPane.getStylesheets().add(getClass().getResource("/application.css").toExternalForm());
+		alerta.showAndWait();
 	}
 
 	private void clear() {
