@@ -3,6 +3,9 @@ package agenda.interfaz;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+
+import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -127,55 +130,30 @@ public class GuiAgenda extends Application {
 		btnListar = new Button("Listar");
 		btnListar.setPrefWidth(250);
 		btnListar.setOnAction(event -> listar());
-		btnListar.setStyle("-fx-background-color: rgb(222,193,180);\r\n"
-				+ "	-fx-border-color:  rgb(128,128,128);\r\n"
-				+ "    -fx-border-radius:  4px;\r\n"
-				+ "    -fx-font-family: \"Pt Sans\";\r\n"
-				+ "    -fx-font-size: 14px;\r\n"
-				+ "    -fx-text-fill:  blue;");
+		btnListar.getStyleClass().add("botones");
 		VBox.setMargin(btnListar, new Insets(0, 0, 40, 0));
 		
 		btnPersonalesEnLetra = new Button("Contactos personales en letra");
 		btnPersonalesEnLetra.setPrefWidth(250);
 		btnPersonalesEnLetra.setOnAction(event -> contactosPersonalesEnLetra());
-		btnPersonalesEnLetra.setStyle("-fx-background-color: rgb(222,193,180);\r\n"
-				+ "	-fx-border-color:  rgb(128,128,128);\r\n"
-				+ "    -fx-border-radius:  4px;\r\n"
-				+ "    -fx-font-family: \"Pt Sans\";\r\n"
-				+ "    -fx-font-size: 14px;\r\n"
-				+ "    -fx-text-fill:  blue;");
+		btnPersonalesEnLetra.getStyleClass().add("botones");
 		
 		btnPersonalesOrdenadosPorFecha = new Button("Contactos Personales\n ordenados por fecha");
 		btnPersonalesOrdenadosPorFecha.setPrefWidth(250);
 		btnPersonalesOrdenadosPorFecha.setOnAction(event -> personalesOrdenadosPorFecha());
-		btnPersonalesOrdenadosPorFecha.setStyle("-fx-background-color: rgb(222,193,180);\r\n"
-				+ "	-fx-border-color:  rgb(128,128,128);\r\n"
-				+ "    -fx-border-radius:  4px;\r\n"
-				+ "    -fx-font-family: \"Pt Sans\";\r\n"
-				+ "    -fx-font-size: 14px;\r\n"
-				+ "    -fx-text-fill:  blue;");
+		btnPersonalesOrdenadosPorFecha.getStyleClass().add("botones");
 		VBox.setVgrow(btnPersonalesOrdenadosPorFecha, Priority.ALWAYS);
 		
 		btnClear = new Button("Clear");
 		btnClear.setPrefWidth(250);
 		btnClear.setOnAction(event -> clear());
-		btnClear.setStyle("-fx-background-color: rgb(222,193,180);\r\n"
-				+ "	-fx-border-color:  rgb(128,128,128);\r\n"
-				+ "    -fx-border-radius:  4px;\r\n"
-				+ "    -fx-font-family: \"Pt Sans\";\r\n"
-				+ "    -fx-font-size: 14px;\r\n"
-				+ "    -fx-text-fill:  blue;");
+		btnClear.getStyleClass().add("botones");
 		VBox.setMargin(btnClear, new Insets(40, 0, 0, 0));
 		
 		btnSalir = new Button("Salir ");
 		btnSalir.setPrefWidth(250);
 		btnSalir.setOnAction(event -> salir());
-		btnSalir.setStyle("-fx-background-color: rgb(222,193,180);\r\n"
-				+ "	-fx-border-color:  rgb(128,128,128);\r\n"
-				+ "    -fx-border-radius:  4px;\r\n"
-				+ "    -fx-font-family: \"Pt Sans\";\r\n"
-				+ "    -fx-font-size: 14px;\r\n"
-				+ "    -fx-text-fill:  blue;");
+		btnSalir.getStyleClass().add("botones");
 		
 		panel.getChildren().add(txtBuscar);
 		panel.getChildren().addAll(rbtListarTodo, rbtListarSoloNumero);
@@ -223,7 +201,7 @@ public class GuiAgenda extends Application {
 	
 	private Button crearBotones(String texto) {
 		Button boton = new Button(texto);
-		boton.setStyle(".botonletra");
+		boton.getStyleClass().add("botonletra");
 		boton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 		GridPane.setHgrow(boton, Priority.ALWAYS);
 		GridPane.setVgrow(boton, Priority.ALWAYS);
@@ -383,7 +361,18 @@ public class GuiAgenda extends Application {
 
 	private void felicitar() {
 		clear();
-		
+		LocalDate ld = LocalDate.now();
+		List<Personal> felicitar = agenda.felicitar();
+		if(agenda.totalContactos() > 0) {
+			String str = ("Hoy es " + ld);
+			for (Contacto con : felicitar) {
+				str += con.toString();
+			}
+			areaTexto.setText(str);
+		}else {
+			areaTexto.setText("Inserte antes la agenda");
+		}
+
 	}
 
 	private void buscar() {
