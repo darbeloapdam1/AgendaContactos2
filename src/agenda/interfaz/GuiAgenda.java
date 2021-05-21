@@ -113,6 +113,7 @@ public class GuiAgenda extends Application {
 		txtBuscar = new TextField("");
 		txtBuscar.setPromptText("Buscar");
 		txtBuscar.setMinHeight(40);
+		
 		VBox.setMargin(txtBuscar, new Insets(0, 0, 40, 0));
 		
 		ToggleGroup grupo = new ToggleGroup();
@@ -308,18 +309,21 @@ public class GuiAgenda extends Application {
 				"P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z");
 			ChoiceDialog<String> dialogo = new ChoiceDialog<>("A",opciones);
 			dialogo.setTitle("Selector de letra");
+			dialogo.setHeaderText(null);
 			dialogo.setContentText("Elija letra:");
 			Optional<String> resul = dialogo.showAndWait();
 			if(resul.isPresent()) {
 				String opcion = resul.get();
-				List<Personal> contactos = agenda.personalesOrdenadosPorFechaNacimiento(opcion.charAt(0));
+				try {
+					List<Personal> contactos = agenda.personalesOrdenadosPorFechaNacimiento(opcion.charAt(0));
 					if(contactos.size() > 0) {
 					String resulTexto = "Contactos personales ordenados por fecha de nacimiento\n\n" + opcion + "\n";
 					for(Personal per : contactos) {
 						resulTexto += per.toString();
 					}
 					areaTexto.setText(resulTexto);
-				}else {
+					}
+				}catch(NullPointerException e) {
 					areaTexto.setText("No hay contactos personales");
 				}
 			}			
@@ -364,15 +368,16 @@ public class GuiAgenda extends Application {
 
 	private void contactosEnLetra(char letra) {
 		clear();
-		if(agenda.totalContactos() > 0) {
-			Set<Contacto> contactos = agenda.contactosEnLetra(letra);
-			String textoResul = "Contactos en la letra " + letra;
-			if(contactos.size() > 0) {
+		String textoResul = "";
+		if(agenda.totalContactos() > 0) { 
+			try {
+				Set<Contacto> contactos = agenda.contactosEnLetra(letra);
+				textoResul = "Contactos en la letra " + letra;
 				for (Contacto con : contactos) {
 					textoResul += con.toString();
 				}
-			}else {
-				textoResul += "No hay contactos";
+			}catch(NullPointerException e) {
+				textoResul += "\nNo hay contactos";
 			}
 			areaTexto.setText(textoResul);
 		}else {
