@@ -5,9 +5,13 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
+import com.sun.net.httpserver.Authenticator.Result;
 
 import agenda.io.AgendaIO;
 import agenda.modelo.AgendaContactos;
+import agenda.modelo.Contacto;
 import agenda.modelo.Personal;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -333,13 +337,45 @@ public class GuiAgenda extends Application {
 
 	private void contactosPersonalesEnLetra() {
 		clear();
-		// a completar
+		if(agenda.totalContactos() > 0) {
+			List<String> opciones = Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "Ñ", "O", 
+					"P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z");
+				ChoiceDialog<String> dialogo = new ChoiceDialog<>("A",opciones);
+				dialogo.setTitle("Selector de letra");
+				dialogo.setContentText("Elija letra:");
+				Optional<String> resul = dialogo.showAndWait();
+				if(resul.isPresent()) {
+					List<Personal> contactos = agenda.personalesEnLetra(resul.get().charAt(0));
+					String resulTexto = "Contactos personales en la letra " + resul.get() + "(" + contactos.size() + " contactos/a)\n";
+					for (Personal con : contactos) {
+						resulTexto += con.toString();
+					}
+					areaTexto.setText(resulTexto);
+				}else {
+					areaTexto.setText("No hay contactos");
+				}
+		}else {
+			areaTexto.setText("Inserte antes la agenda");
+		}
 
 	}
 
 	private void contactosEnLetra(char letra) {
 		clear();
-		// a completar
+		if(agenda.totalContactos() > 0) {
+			Set<Contacto> contactos = agenda.contactosEnLetra(letra);
+			String textoResul = "Contactos en la letra " + letra;
+			if(contactos.size() > 0) {
+				for (Contacto con : contactos) {
+					textoResul += con.toString();
+				}
+			}else {
+			textoResul += "No hay contactos";
+			}
+			areaTexto.setText(textoResul);
+		}else {
+			areaTexto.setText("Inserte antes la agenda");
+		}
 	}
 
 	private void felicitar() {
