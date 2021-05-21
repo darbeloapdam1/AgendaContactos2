@@ -40,7 +40,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
-import jdk.jshell.Diag;
 /**
  * 
  * @author Diego Arbeloa - Carla Barberia
@@ -201,6 +200,12 @@ public class GuiAgenda extends Application {
 		return panel;
 	}
 	
+	/**
+	 * 
+	 * @param texto el texto del boton
+	 * @return el boton ya creado
+	 */
+	
 	private Button crearBotones(String texto) {
 		Button boton = new Button(texto);
 		boton.getStyleClass().add("botonletra");
@@ -253,12 +258,16 @@ public class GuiAgenda extends Application {
 		selector.setInitialDirectory(new File("."));
 		selector.getExtensionFilters().addAll(new ExtensionFilter("csv","*.csv"));
 		File f = selector.showOpenDialog(null);
-		int errores = AgendaIO.importar(agenda, f.getName());
+		int errores = AgendaIO.importar(agenda, f.getName());	
 		clear();
 		areaTexto.setText("Lineas erroneas: " + errores);
 		itemImportar.setDisable(true);
 		itemExportarPersonales.setDisable(false);
 	}
+	
+	/**
+	 * exporta en un fichero txt todos los contactos personales
+	 */
 
 	private void exportarPersonales() {
 		FileChooser selector = new FileChooser();
@@ -277,7 +286,7 @@ public class GuiAgenda extends Application {
 	}
 
 	/**
-	 *  
+	 *  lista la agenda dependiendo de que radiobutton este seleccionado
 	 */
 	private void listar() {
 		clear();
@@ -293,6 +302,10 @@ public class GuiAgenda extends Application {
 
 	}
 
+	/**
+	 * muestra los contactos ordenados por fecha
+	 */
+	
 	private void personalesOrdenadosPorFecha() {
 		clear();
 		if(agenda.totalContactos() > 0) {
@@ -320,6 +333,10 @@ public class GuiAgenda extends Application {
 		}
 	}
 
+	/**
+	 * muestra los contactos personales en una letra seleccionada 
+	 */
+	
 	private void contactosPersonalesEnLetra() {
 		clear();
 		if(agenda.totalContactos() > 0) {
@@ -344,6 +361,11 @@ public class GuiAgenda extends Application {
 		}
 
 	}
+	
+	/**
+	 * muestra los contactos en una letra
+	 * @param letra la letra por la que empiezan los contactos
+	 */
 
 	private void contactosEnLetra(char letra) {
 		clear();
@@ -363,6 +385,10 @@ public class GuiAgenda extends Application {
 		}
 	}
 
+	/**
+	 * muestra los contactos que hay que felicitar
+	 */
+	
 	private void felicitar() {
 		clear();
 		LocalDate ld = LocalDate.now();
@@ -379,6 +405,10 @@ public class GuiAgenda extends Application {
 
 	}
 
+	/**
+	 * busca los contactos que tengan un determinado texto
+	 */
+	
 	private void buscar() {
 		clear();
 		if(agenda.totalContactos() > 0) {
@@ -400,6 +430,10 @@ public class GuiAgenda extends Application {
 
 	}
 
+	/**
+	 * saca informacion del la agenda
+	 */
+	
 	private void about() {
 		Alert alerta = new Alert(Alert.AlertType.INFORMATION);
 		alerta.setTitle("About agenda de contactos");

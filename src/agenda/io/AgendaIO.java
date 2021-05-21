@@ -41,6 +41,8 @@ public class AgendaIO {
 					errores++;
 				}catch(IllegalArgumentException e) {
 					errores++;
+				}catch(NullPointerException e) {
+					errores++;
 				}
 		}
 		}catch(NullPointerException e) {
